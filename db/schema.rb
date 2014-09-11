@@ -11,14 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909171212) do
+ActiveRecord::Schema.define(version: 20140911193600) do
 
   create_table "countries", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "iso",        null: false
+    t.string   "name",        null: false
+    t.string   "iso",         null: false
+    t.string   "mobile_code", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "account_name",         null: false
@@ -38,5 +55,8 @@ ActiveRecord::Schema.define(version: 20140909171212) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["account_name"], name: "index_users_on_account_name", using: :btree
+  add_index "users", ["country_id"], name: "index_users_on_country_id", using: :btree
 
 end

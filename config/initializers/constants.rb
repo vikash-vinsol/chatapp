@@ -1,1 +1,1 @@
-DEVICE_TYPE = { ios: '0', android: '1' }
+DEVICE_TYPE = { 'iphone' => '0', 'android' => '1' }
