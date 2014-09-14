@@ -56,7 +56,8 @@ ActiveRecord::Schema.define(version: 20140911193600) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["account_name"], name: "index_users_on_account_name", using: :btree
+  add_index "users", ["account_name"], name: "index_users_on_account_name", unique: true, using: :btree
   add_index "users", ["country_id"], name: "index_users_on_country_id", using: :btree
+  add_index "users", ["mobile"], name: "index_users_on_mobile", unique: true, using: :btree
 
 end
