@@ -22,5 +22,6 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :country_id, name: 'index_users_on_country_id'
     add_index :users, :account_name, name: 'index_users_on_account_name', unique: true
     add_index :users, :mobile, name: 'index_users_on_mobile', unique: true
+    add_index :users, :device_token, name: 'index_users_on_device_token', unique: true
   end
 end
