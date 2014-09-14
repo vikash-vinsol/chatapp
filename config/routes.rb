@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       resources :countries, only: :index
       
       resources :users, only: :create do
-        get :check_presence, on: :collection
+        collection do
+          get 'check_presence/:account_name', to: :check_presence
+          put 'resend_verification_sms/:mobile', to: :resend_verification_sms
+          put 'verify/:mobile/:verification_token', to: :verify
+        end
       end
     end
   end

@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(version: 20140911193600) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "account_name",         null: false
-    t.string   "firstname",            null: false
-    t.string   "lastname",             null: false
-    t.integer  "country_id",           null: false
-    t.string   "mobile",               null: false
+    t.string   "account_name",                               null: false
+    t.string   "firstname",                                  null: false
+    t.string   "lastname",                                   null: false
+    t.integer  "country_id",                                 null: false
+    t.string   "mobile",                                     null: false
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20140911193600) do
     t.string   "device_type"
     t.string   "device_token"
     t.string   "verification_token"
-    t.boolean  "verified"
-    t.boolean  "verification_expired"
+    t.boolean  "verified",                   default: false
+    t.datetime "verification_token_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

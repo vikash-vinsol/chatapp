@@ -13,13 +13,14 @@ class CreateUsers < ActiveRecord::Migration
       t.string :device_type
       t.string :device_token
       t.string :verification_token
-      t.boolean :verified
-      t.boolean :verification_expired
+      t.boolean :verified, default: false
+      t.datetime :verification_token_sent_at
 
       t.timestamps
     end
 
     add_index :users, :country_id, name: 'index_users_on_country_id'
-    add_index :users, :account_name, name: 'index_users_on_account_name'
+    add_index :users, :account_name, name: 'index_users_on_account_name', unique: true
+    add_index :users, :mobile, name: 'index_users_on_mobile', unique: true
   end
 end
