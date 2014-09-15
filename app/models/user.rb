@@ -11,12 +11,14 @@ class User < ActiveRecord::Base
   scope :verified, -> { where(verified: true) }
   scope :with_account_name, ->(account_name) { where(account_name: account_name) }
   scope :with_device_token, ->(device_token) { where(device_token: device_token) }
+  scope :with_mobiles, ->(mobiles) { where(mobile: mobiles) }
+
 
   def self.exist_with_account_name?(account_name)
     with_account_name(account_name).any?
   end
 
-  def self.exist_with_verified_device_token?(device_token)
+  def self.exist_with_verified_device?(device_token)
     with_device_token(device_token).verified.any?
   end
 
