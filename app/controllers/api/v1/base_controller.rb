@@ -11,7 +11,7 @@ module Api
       private
 
         def authorize_request
-          render(status: 401) unless(User.where(id: session[:user_id]).exist_with_verified_device?(current_device_token))
+          render(status: 401) unless(current_user)
         end
 
         def current_device_type
@@ -20,6 +20,10 @@ module Api
 
         def current_device_token
           @current_device_token ||= request.headers['HTTP_DEVICE_TOKEN']
+        end
+
+        def current_user
+          @current_user ||= User.where(id: session[:user_id]).with_device_token(current_device_token).verified.first
         end
     end
   end
