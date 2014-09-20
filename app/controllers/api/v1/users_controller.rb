@@ -1,8 +1,9 @@
 module Api
   module V1
     class UsersController < BaseController
-      before_filter :load_user, only: [:resend_verification_sms, :verify, :send_friend_request, :friend_invitation_response]
+      before_filter :load_user_by_mobile, only: [:resend_verification_sms, :verify, :send_friend_request, :friend_invitation_response]
       before_filter :check_status, only: :friend_invitation_response
+
       skip_before_filter :authorize_request, only: [:create, :check_presence, :resend_verification_sms, :verify]
 
       def create
@@ -44,7 +45,7 @@ module Api
           render(status: 400, text: 'Incorrect status response') unless(FriendInvitation.accept_status?(params[:status]) || FriendInvitation.reject_status?(params[:status]))
         end
 
-        def load_user
+        def load_user_by_mobile
           render(status: 404, text: 'not found') unless(@user = User.find_by_mobile(params[:mobile]))
         end
 

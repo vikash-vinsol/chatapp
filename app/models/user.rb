@@ -1,11 +1,16 @@
 class User < ActiveRecord::Base
   include Verification
 
+  has_many :content_receivers, foreign_key: :receiver_id, dependent: :destroy
+  has_many :pending_contents, class_name: 'Content', through: :content_receivers, source: :content
+  has_many :contents, dependent: :destroy
+
   belongs_to :country
 
   validates :account_name, :firstname, :lastname, :country, :mobile, presence: true
   validates :device_type, :device_token, presence: true, if: :verified?
-  validates :account_name, :mobile, :device_token, uniqueness: true
+  validates :device_token, uniqueness: true, if: :verified?
+  validates :account_name, :mobile, uniqueness: true
   validates :mobile, format: { with: /\d{10}/ }
 
   has_many :friend_invitations, foreign_key: :inviter_id

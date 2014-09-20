@@ -13,6 +13,8 @@ Rails.application.routes.draw do
           post :friend_invitation_response
         end
       end
+
+      resources :shares, only: [:create, :show]
     end
   end
 end

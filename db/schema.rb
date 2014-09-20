@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917184118) do
+ActiveRecord::Schema.define(version: 20140918193543) do
+
+  create_table "content_receivers", force: true do |t|
+    t.integer  "receiver_id"
+    t.integer  "content_id"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "contents", force: true do |t|
+    t.text     "description"
+    t.integer  "user_id"
+    t.string   "attachment_file_name"
+    t.integer  "attachment_file_size"
+    t.string   "attachment_content_type"
+    t.datetime "attachment_update_at"
+    t.integer  "timer"
+    t.integer  "receiver_count",          default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contents", ["user_id"], name: "index_contents_on_user_id", using: :btree
 
   create_table "countries", force: true do |t|
     t.string   "name",        null: false

@@ -11,7 +11,7 @@ module Api
       private
 
         def authorize_request
-          render(status: 401) unless(current_user)
+          render(status: 401, text: 'Request not authorised.') unless(current_user)
         end
 
         def current_device_type
