@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911193600) do
+ActiveRecord::Schema.define(version: 20140917184118) do
 
   create_table "countries", force: true do |t|
     t.string   "name",        null: false
@@ -36,6 +36,20 @@ ActiveRecord::Schema.define(version: 20140911193600) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "friend_invitations", force: true do |t|
+    t.integer  "inviter_id", null: false
+    t.integer  "invitee_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "friendships", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "friend_id",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "account_name",                               null: false

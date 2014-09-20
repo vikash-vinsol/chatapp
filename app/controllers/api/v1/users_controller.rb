@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < BaseController
-      before_filter :load_user, only: [:resend_verification_sms, :verify]
+      before_filter :load_user, only: [:resend_verification_sms, :verify, :send_friend_request]
       skip_before_filter :authorize_request, only: [:create, :check_presence, :resend_verification_sms, :verify]
 
       def create
@@ -27,6 +27,11 @@ module Api
       def users_by_phone
         @users = User.verified.with_mobiles(params[:mobiles])
         respond_with(@users)
+      end
+
+      def send_friend_request
+        @friend_request, @status = current_user.send_friend_invitation_to(@user)
+        respond_with(@friend_request)
       end
 
       private
