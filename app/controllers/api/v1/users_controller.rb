@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < BaseController
-      before_filter :load_user, only: [:resend_verification_sms, :verify]
+      before_filter :load_user_by_mobile, only: [:resend_verification_sms, :verify]
       skip_before_filter :authorize_request, only: [:create, :check_presence, :resend_verification_sms, :verify]
 
       def create
@@ -30,7 +30,7 @@ module Api
       end
 
       private
-        def load_user
+        def load_user_by_mobile
           render(status: 404) unless(@user = User.find_by_mobile(params[:mobile]))
         end
 

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
           get 'users_by_phone', to: :users_by_phone
         end
       end
+
+      resources :shares, only: [:create, :show]
     end
   end
 end

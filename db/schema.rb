@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911193600) do
+ActiveRecord::Schema.define(version: 20140918193543) do
+
+  create_table "content_receivers", force: true do |t|
+    t.integer  "receiver_id"
+    t.integer  "content_id"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "contents", force: true do |t|
+    t.text     "description"
+    t.integer  "user_id"
+    t.string   "attachment_file_name"
+    t.integer  "attachment_file_size"
+    t.string   "attachment_content_type"
+    t.datetime "attachment_update_at"
+    t.integer  "timer"
+    t.integer  "receiver_count",          default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contents", ["user_id"], name: "index_contents_on_user_id", using: :btree
 
   create_table "countries", force: true do |t|
     t.string   "name",        null: false
@@ -58,6 +81,7 @@ ActiveRecord::Schema.define(version: 20140911193600) do
 
   add_index "users", ["account_name"], name: "index_users_on_account_name", unique: true, using: :btree
   add_index "users", ["country_id"], name: "index_users_on_country_id", using: :btree
+  add_index "users", ["device_token"], name: "index_users_on_device_token", unique: true, using: :btree
   add_index "users", ["mobile"], name: "index_users_on_mobile", unique: true, using: :btree
 
 end
