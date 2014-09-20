@@ -8,8 +8,9 @@ Rails.application.routes.draw do
           get 'check_presence/:account_name', to: :check_presence
           put 'resend_verification_sms/:mobile', to: :resend_verification_sms
           put 'verify/:mobile/:verification_token', to: :verify
-          get 'users_by_phone'
-          post 'send_friend_request'
+          get :users_by_phone
+          post :send_friend_request
+          post :friend_invitation_response
         end
       end
     end

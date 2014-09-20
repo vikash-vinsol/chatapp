@@ -20,6 +20,16 @@ class User < ActiveRecord::Base
     with_account_name(account_name).any?
   end
 
+  def handle_friend_invitation_response(inviter, status)
+    friend_invitation = inviter.friend_invitations.find_by_invitee_id(id)
+
+    if(friend_invitation.present?)
+      friend_invitation.accept_or_reject(status)
+    else
+      FriendInvitation::RESPONSE_CODES[:not_exist]
+    end
+  end
+
   def has_friend?(user)
     friendships.exist_with?(user)
   end
@@ -36,12 +46,12 @@ class User < ActiveRecord::Base
     if(has_friend?(user))
       [nil, FriendInvitation::RESPONSE_CODES[:existing_friend]]
     elsif(friend_invitation_pending_with?(user))
-      [nil, FriendInvitation::RESPONSE_CODES[:pending]]
+      [nil, FriendInvitation::STATUS[:pending]]
     else
       if((friend_invitation = friend_invitations.create(invitee_id: user.id)).errors.any?)
-        [friend_invitation, FriendInvitation::RESPONSE_CODES[:error]]
+        [friend_invitation, FriendInvitation::RESPONSE_CODES[:failure]]
       else
-        [friend_invitation, FriendInvitation::RESPONSE_CODES[:sent]]
+        [friend_invitation, FriendInvitation::RESPONSE_CODES[:success]]
       end
     end
   end
