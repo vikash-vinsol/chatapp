@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
     if(has_friend?(user))
       [nil, FriendInvitation::RESPONSE_CODES[:existing_friend]]
     elsif(friend_invitation_pending_with?(user))
-      [nil, FriendInvitation::STATUS[:pending]]
+      [nil, FriendInvitation::RESPONSE_CODES[:pending]]
     else
       if((friend_invitation = friend_invitations.create(invitee_id: user.id)).errors.any?)
         [friend_invitation, FriendInvitation::RESPONSE_CODES[:failure]]

@@ -1,5 +1,5 @@
 class FriendInvitation < ActiveRecord::Base
-  RESPONSE_CODES = { success: '0', existing_friend: '1', failure: '2', not_exist: '3' }
+  RESPONSE_CODES = { success: '0', existing_friend: '1', failure: '2', not_exist: '3', pending: '4' }
   STATUS = { pending: '0', accept: '1', reject: '2' }
 
   belongs_to :inviter, class_name: User
