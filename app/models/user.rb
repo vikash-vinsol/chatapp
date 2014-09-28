@@ -14,7 +14,11 @@ class User < ActiveRecord::Base
   validates :mobile, format: { with: /\d{10}/ }
 
   has_many :friend_invitations, foreign_key: :inviter_id
+  has_many :friend_invitations_received, foreign_key: :invitee_id, class: FriendInvitation
   has_many :friendships, foreign_key: :user_id
+  has_many :friends, through: :friendships, source: :friend
+  has_many :friend_invitations_sent_to, through: :friend_invitations, source: :invitee
+  has_many :friend_invitations_received_by, through: :friend_invitations_received, source: :inviter
 
   scope :verified, -> { where(verified: true) }
   scope :with_account_name, ->(account_name) { where(account_name: account_name) }

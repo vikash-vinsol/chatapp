@@ -1,3 +1,5 @@
 collection @users
 
-attributes :account_name, :firstname, :lastname, :mobile, :country_id
+node(false) do |user|
+  partial("api/v1/users/show", object: user)
+end
