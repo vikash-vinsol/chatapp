@@ -13,6 +13,13 @@ module Verification
     self.verification_token == verification_token
   end
 
+  def mark_unverified
+    self.device_type = nil
+    self.device_token = nil
+    self.verified = false
+    save
+  end
+
   def regenerate_verification_token
     generate_verification_token
     save
@@ -33,11 +40,22 @@ module Verification
     if(verification_token_expired?)
       VERIFY_STATUS[:expired]
     elsif(has_verification_token?(verification_token))
+      User.mark_unverified_device(device_type, device_token)
       save_verified_device(device_type, device_token)
       VERIFY_STATUS[:verified]
     else
       VERIFY_STATUS[:invalid]
     end
+  end
+
+  module ClassMethods
+    
+    def mark_unverified_device(device_type, device_token)
+      if(user = with_device_type(device_type).with_device_token(device_token).first)
+        user.mark_unverified
+      end
+    end
+
   end
 
   private

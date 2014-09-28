@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
   scope :verified, -> { where(verified: true) }
   scope :with_account_name, ->(account_name) { where(account_name: account_name) }
+  scope :with_device_type, ->(device_type) { where(device_type: device_type) }
   scope :with_device_token, ->(device_token) { where(device_token: device_token) }
   scope :with_mobiles, ->(mobiles) { where(mobile: mobiles) }
 
