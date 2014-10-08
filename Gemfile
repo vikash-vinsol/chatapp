@@ -24,6 +24,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'rabl', '~> 0.11.0'
 
+gem 'activerecord-session_store'
+
 group :staging, :production do
   gem 'rails_12factor'
 end
