@@ -40,6 +40,12 @@ module Api
         @status = current_user.handle_friend_invitation_response(@user, params[:status])
       end
 
+      def friends_and_invitations
+        @friends = current_user.friends
+        @friend_invitations_sent_to = current_user.friend_invitations_sent_to
+        @friend_invitations_received_by = current_user.friend_invitations_received_by
+      end
+
       private
         def check_status
           render(status: 400, text: 'Incorrect status response') unless(FriendInvitation.accept_status?(params[:status]) || FriendInvitation.reject_status?(params[:status]))
