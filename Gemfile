@@ -24,6 +24,10 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'rabl', '~> 0.11.0'
 
+group :staging, :production do
+  gem 'rails_12factor'
+end
+
 gem 'delayed_job_active_record', '~> 4.0.2'
 gem 'paperclip'
 gem 'thin'
