@@ -27,6 +27,8 @@ gem 'rabl', '~> 0.11.0'
 gem 'delayed_job_active_record', '~> 4.0.2'
 gem 'paperclip'
 gem 'thin'
+gem 'rpush', '~> 2.2.0'
+gem 'figaro', '~> 1.0.0'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 # gem 'spring',        group: :development
 
