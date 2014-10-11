@@ -23,7 +23,7 @@ module Api
         end
 
         def current_user
-          @current_user ||= User.where(id: session[:user_id]).with_device_token(current_device_token).verified.first
+          @current_user ||= User.verified.with_device_token(current_device_token).find_by(id: session[:user_id])
         end
     end
   end
