@@ -22,7 +22,7 @@ module Api
 
         def load_users_by_mobile
           # only share with friends and verified users
-          if (@users = User.verified.where(mobile: params[:mobiles] || params[:mobile])).blank?
+          if (@users = current_user.friends.verified.where(mobile: params[:mobiles] || params[:mobile])).blank?
             render status: 404, text: 'Receiver not found.'
           end
         end

@@ -46,6 +46,15 @@ module Api
         @friend_invitations_received_by = current_user.friend_invitations_received_by
       end
 
+      def friends_and_contacts
+        @friends = current_user.friends
+        @friend_invitations_sent_to = current_user.friend_invitations_sent_to
+        @friend_invitations_received_by = current_user.friend_invitations_received_by
+        @users = User.verified.with_mobiles(params[:mobiles] ||= [])
+        @others = params[:mobiles] - @users.pluck(:mobile)
+        @users -= (@friends + @friend_invitations_sent_to + @friend_invitations_received_by)
+      end
+
       private
         def check_status
           render(status: 400, text: 'Incorrect status response') unless(FriendInvitation.accept_status?(params[:status]) || FriendInvitation.reject_status?(params[:status]))
