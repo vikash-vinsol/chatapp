@@ -18,3 +18,5 @@ config/database.yml
 # config/sms_delivery.yml
 *.DS_Store
 public/attachment/*
+# Ignore application configuration
+/config/application.yml

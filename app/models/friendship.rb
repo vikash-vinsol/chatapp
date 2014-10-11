@@ -10,7 +10,7 @@ class Friendship < ActiveRecord::Base
   def after_friendship_tasks
     if(user.friend_invitations.find_by_invitee_id(friend_id).try(:destroy))
       Friendship.create_without_validation_and_callback(friend_id, user_id)
-      'push notification to (user) about friend request accepted of (friend)'
+      friend.send_accept_or_reject_invitation_of(user, 'accepts')
     else
       raise ActiveRecord::Rollback
     end

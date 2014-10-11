@@ -23,7 +23,11 @@ class FriendInvitation < ActiveRecord::Base
   end
 
   def send_friend_invitation
-    p 'Send friend invitation (phone_no, username) using push notification'
+    invitee_device = { type: invitee.device_type, token: invitee.device_token }
+    inviter_mobile = inviter.mobile
+    data = { inviter_mobile: inviter_mobile }
+    message = "#{inviter_mobile} invited you"
+    PushNotification.new([invitee_device], data, message).send
   end
 
   def accept_or_reject(status)
@@ -46,7 +50,7 @@ class FriendInvitation < ActiveRecord::Base
   def reject
     if(destroy)
       FriendInvitation::RESPONSE_CODES[:success]
-      'push to (user) that friend request of(self) has been rejected'
+      invitee.send_accept_or_reject_invitation_of(inviter, 'rejects')
     else
       FriendInvitation::RESPONSE_CODES[:failure]
     end

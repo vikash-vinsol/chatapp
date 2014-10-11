@@ -48,6 +48,14 @@ class User < ActiveRecord::Base
     "#{country.mobile_code}#{mobile}"
   end
 
+  def send_accept_or_reject_invitation_of(user, status)
+    inviter_device = { type: user.device_type, token: user.device_token }
+    invitee_mobile = mobile
+    data = { invitee_mobile: invitee_mobile }
+    message = "#{invitee_mobile} #{status} your invitation"
+    PushNotification.new([inviter_device], data, message).send
+  end
+
   def friend_invitation_pending_with?(user)
     FriendInvitation.pending_between?(self, user)
   end
