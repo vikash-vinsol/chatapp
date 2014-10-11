@@ -7,3 +7,9 @@ app.environment = ENV['apple_notification_environment'] # APNs environment.
 app.password = ENV['apple_notification_password']
 app.connections = 1
 app.save!
+
+#android_app
+app = Rpush::Gcm::App.where(name: 'android_app').first_or_initialize
+app.auth_key = ENV['apple_auth_key']
+app.connections = 1
+app.save!
