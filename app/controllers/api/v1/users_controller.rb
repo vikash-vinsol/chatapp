@@ -51,7 +51,7 @@ module Api
         else
           @users = []
         end
-        @others = params[:mobiles] - @users.map(&:mobile) - total_friend_related_users.map(&:mobile)
+        @others = (params[:mobiles] || []) - @users.map(&:mobile) - total_friend_related_users.map(&:mobile)
       end
 
       private
