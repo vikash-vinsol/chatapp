@@ -51,8 +51,8 @@ module Api
         @friend_invitations_sent_to = current_user.friend_invitations_sent_to
         @friend_invitations_received_by = current_user.friend_invitations_received_by
         @users = User.verified.with_mobiles(params[:mobiles] ||= [])
-        @others = params[:mobiles] - @users.pluck(:mobile)
         @users -= (@friends + @friend_invitations_sent_to + @friend_invitations_received_by)
+        @others = params[:mobiles] - @users.pluck(:mobile)
       end
 
       private
