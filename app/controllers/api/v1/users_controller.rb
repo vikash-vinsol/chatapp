@@ -26,11 +26,6 @@ module Api
         respond_with(@user)
       end
 
-      def users_by_phone
-        @users = User.verified.with_mobiles(params[:mobiles])
-        respond_with(@users)
-      end
-
       def send_friend_request
         @friend_request, @status = current_user.send_friend_invitation_to(@user)
         respond_with(@friend_request)
@@ -50,9 +45,13 @@ module Api
         @friends = current_user.friends
         @friend_invitations_sent_to = current_user.friend_invitations_sent_to
         @friend_invitations_received_by = current_user.friend_invitations_received_by
-        @users = User.verified.with_mobiles(params[:mobiles] ||= [])
-        @others = params[:mobiles] - @users.pluck(:mobile)
-        @users -= (@friends + @friend_invitations_sent_to + @friend_invitations_received_by)
+        total_friend_related_users = @friends + @friend_invitations_sent_to + @friend_invitations_received_by
+        if(params[:mobiles].present?)
+          @users = User.where.not(id: total_friend_related_users.map(&:id)).verified.with_mobiles(params[:mobiles])
+        else
+          @users = []
+        end
+        @others = params[:mobiles] - @users.map(&:mobile) - total_friend_related_users.map(&:mobile)
       end
 
       private
