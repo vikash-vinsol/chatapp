@@ -1,9 +1,9 @@
-class Share < ContentReceiver
-  def self.with_users(content, users)
+class Chat < ContentReceiver
+  def self.with_user(content, user)
     begin
       transaction do
         content.save!
-        push_content_to_users(content, users)
+        push_content_to_users(content, user)
       end
     rescue StandardError => e
       content.errors.add(:base, "#{e}")

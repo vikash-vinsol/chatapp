@@ -4,6 +4,7 @@ class Content < ActiveRecord::Base
   belongs_to :user
 
   has_attached_file :attachment,
+                    default_url: '',
                     url: 'public/attachment/:id/:style/:basename.:extension',
                     path: 'public/attachment/:id/:style/:basename.:extension'
 
@@ -15,20 +16,17 @@ class Content < ActiveRecord::Base
 
   after_update :destroy, if: Proc.new { receiver_count.zero? }
 
-  def save_and_share_with_users(users)
-    begin
-      transaction do
-        save!
-        Share.content_with_users!(self, users)
-      end
-    rescue StandardError => e
-      errors.add(:base, "#{e}")
-      return false
-    end
-    true
+  def push_notify
+    device_infos = receivers.map { |user| {type: user.device_type, token: user.device_token} }
+    data = { description: description, attachment_url: attachment_url, timer: timer, from: user.mobile }
+    PushNotification.new(device_infos, data, alert_desc).send
   end
 
-  def push_notify(users)
-    # push content to user device
+  def attachment_url
+    attachment.url if attachment.url.present?
+  end
+
+  def alert_desc
+    "#{user.mobile}: #{description.truncate(20)}"
   end
 end

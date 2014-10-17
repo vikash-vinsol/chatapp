@@ -16,7 +16,9 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :shares, only: [:create, :show]
+      resources :shares, only: :create
+      resources :chats, only: :create
+      # resources :socials, only: [:create, :show]
     end
   end
 end
