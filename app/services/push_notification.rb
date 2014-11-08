@@ -19,7 +19,9 @@ class PushNotification
   end
 
   def send_with_apns
-    Rpush::Apns::Notification.create!(app: APPS['iphone'], device_token: device_tokens['iphone'].first, alert: message, data: data)
+    device_tokens['iphone'].each do |device_token|
+      Rpush::Apns::Notification.create!(app: APPS['iphone'], device_token: device_token, alert: message, data: data)
+    end
   end
 
   def send_with_gcm
