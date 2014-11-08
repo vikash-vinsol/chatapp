@@ -15,6 +15,11 @@ module Api
         @user_exist = User.exist_with_account_name?(params[:account_name])
       end
 
+      def send_installation_sms
+        Sms.delay.deliver(params[:mobile], "XYZ's message")
+        render nothing: true
+      end
+
       def resend_verification_sms
         @user.regenerate_verification_token
         respond_with(@user)

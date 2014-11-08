@@ -13,6 +13,7 @@ Rails.application.routes.draw do
           put 'verify/:mobile/:verification_token', to: :verify
           post :send_friend_request
           post :friend_invitation_response
+          get :send_installation_sms
         end
       end
 
