@@ -12,6 +12,10 @@ module Api
         respond_with(@user)
       end
 
+      def create_friends
+        @friends = current_user.make_friends_with(params[:mobiles])
+      end
+
       def check_presence
         @user_exist = User.exist_with_account_name?(params[:account_name])
       end

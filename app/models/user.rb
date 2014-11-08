@@ -44,6 +44,13 @@ class User < ActiveRecord::Base
     friendships.exist_with?(user)
   end
 
+  def make_friends_with(mobiles)
+    User.verified.with_mobiles(mobiles).select do |user|
+      friendship = friendships.new(friend_id: user.id, without_friend_invitation: true)
+      friendship.save
+    end
+  end
+
   def phone_with_country_code
     "#{country.mobile_code}#{mobile}"
   end
@@ -66,10 +73,11 @@ class User < ActiveRecord::Base
     elsif(friend_invitation_pending_with?(user))
       [nil, FriendInvitation::RESPONSE_CODES[:pending]]
     else
-      if((friend_invitation = friend_invitations.create(invitee_id: user.id)).errors.any?)
-        [friend_invitation, FriendInvitation::RESPONSE_CODES[:failure]]
-      else
+      friend_invitation = friend_invitations.new(invitee_id: user.id)
+      if(friend_invitation.save)
         [friend_invitation, FriendInvitation::RESPONSE_CODES[:success]]
+      else
+        [friend_invitation, FriendInvitation::RESPONSE_CODES[:failure]]
       end
     end
   end

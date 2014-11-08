@@ -1,4 +1,6 @@
 class Friendship < ActiveRecord::Base
+  attr_accessor :without_friend_invitation
+
   belongs_to :user
   belongs_to :friend, class_name: User
 
@@ -8,7 +10,9 @@ class Friendship < ActiveRecord::Base
   after_create :after_friendship_tasks
 
   def after_friendship_tasks
-    if(user.friend_invitations.find_by_invitee_id(friend_id).try(:destroy))
+    if(without_friend_invitation)
+      Friendship.create_without_validation_and_callback(friend_id, user_id)
+    elsif(user.friend_invitations.find_by_invitee_id(friend_id).try(:destroy))
       Friendship.create_without_validation_and_callback(friend_id, user_id)
       friend.send_accept_or_reject_invitation_of(user, 'accepts')
     else

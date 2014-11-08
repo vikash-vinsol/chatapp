@@ -39,12 +39,8 @@ class FriendInvitation < ActiveRecord::Base
   end
 
   def accept
-    begin
-      inviter.friendships.create!(friend_id: invitee_id)
-      FriendInvitation::RESPONSE_CODES[:success]
-    rescue StandardError => e
-      FriendInvitation::RESPONSE_CODES[:failure]
-    end
+    friendship = inviter.friendships.new(friend_id: invitee_id)
+    friendship.save ? FriendInvitation::RESPONSE_CODES[:success] : FriendInvitation::RESPONSE_CODES[:failure]
   end
 
   def reject

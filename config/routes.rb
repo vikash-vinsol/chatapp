@@ -9,11 +9,12 @@ Rails.application.routes.draw do
           get :users_by_phone
           get :friends_and_invitations
           get :friends_and_contacts
+          get :send_installation_sms
           put 'resend_verification_sms/:mobile', to: :resend_verification_sms
           put 'verify/:mobile/:verification_token', to: :verify
           post :send_friend_request
           post :friend_invitation_response
-          get :send_installation_sms
+          post :create_friends
         end
       end
 
