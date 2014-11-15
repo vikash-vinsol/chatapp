@@ -6,12 +6,12 @@ Rails.application.routes.draw do
       resources :users, only: :create do
         collection do
           get 'check_presence/:account_name', to: :check_presence
-          post :friends_and_contacts
           get :send_installation_sms
-          put 'resend_verification_sms/:mobile', to: :resend_verification_sms
-          put 'verify/:mobile/:verification_token', to: :verify
+          post :friends_and_contacts
           post :send_friend_request
           post :friend_invitation_response
+          put 'resend_verification_sms/:mobile', to: :resend_verification_sms
+          put 'verify/:mobile/:verification_token', to: :verify
         end
       end
 
