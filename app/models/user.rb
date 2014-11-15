@@ -47,8 +47,9 @@ class User < ActiveRecord::Base
   def make_friends_with(mobiles)
     User.verified.with_mobiles(mobiles).select do |user|
       friendship = friendships.new(friend_id: user.id, without_friend_invitation: true)
-      friendship.save
-      Rails.logger.info "friend_errors #{(friendship.errors.full_messages)}"
+      a = friendship.save
+      Rails.logger.info "friend_errors separator1 #{user.id} separator2 #{self.id} separator3 #{(friendship.errors.full_messages)}"
+      a
     end
   end
 
