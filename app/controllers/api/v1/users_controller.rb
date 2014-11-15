@@ -62,7 +62,7 @@ module Api
           @new_friends = []
         end
         Rails.logger.info '7' * 80
-        Rails.logger.info "old_friends #{(@old_friends)}"
+        Rails.logger.info "old_friends #{(@old_friends).inspect}"
         Rails.logger.info "new_friends #{(@new_friends)}"
         Rails.logger.info "on #{(@old_friends + @new_friends)}"
         Rails.logger.info '8' * 80
