@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :countries, only: :index
       
-      resources :users, only: :create do
+      resources :users, only: [:create, :show] do
         collection do
           get 'check_presence/:account_name', to: :check_presence
           get :send_installation_sms

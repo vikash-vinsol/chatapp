@@ -12,6 +12,10 @@ module Api
         respond_with(@user)
       end
 
+      def show
+        @user = User.verified.find_by_account_name(params[:account_name])
+      end
+
       def check_presence
         @user_exist = User.exist_with_account_name?(params[:account_name])
       end
