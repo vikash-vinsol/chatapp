@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
     User.verified.with_mobiles(mobiles).select do |user|
       friendship = friendships.new(friend_id: user.id, without_friend_invitation: true)
       friendship.save
+      Rails.logger.info "friend_errors #{(friendship.errors.full_messages)}"
     end
   end
 
