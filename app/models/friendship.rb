@@ -6,6 +6,7 @@ class Friendship < ActiveRecord::Base
 
   validates :user, :friend, presence: true
   validates :user_id, uniqueness: { scope: :friend_id }
+  validate :check_self_friendship
   scope :exist_with, ->(user) { where(friend_id: user.id) }
   after_create :after_friendship_tasks
 
@@ -27,5 +28,9 @@ class Friendship < ActiveRecord::Base
 
   def self.exist_with?(user)
     exist_with(user).any?
+  end
+
+  def check_self_friendship
+    errors.add(:user_id, 'should not equal to friend_id') if(user_id == friend_id)
   end
 end
