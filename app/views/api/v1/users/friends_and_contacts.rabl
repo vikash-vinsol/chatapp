@@ -1,5 +1,5 @@
 node :friends do
-  @friends.map do |user|
+  (@old_friends + @new_friends).map do |user|
     partial("api/v1/users/show", object: user)
   end
 end
@@ -16,12 +16,6 @@ node :friend_invitations_received_by do
   end
 end
 
-node(:users) do
-  @users.map do |user|
-    partial("api/v1/users/show", object: user)
-  end
-end
-
-node(:others) do
-  @others
+node(:other_mobiles) do
+  @other_mobiles
 end

@@ -12,10 +12,6 @@ module Api
         respond_with(@user)
       end
 
-      def create_friends
-        @friends = current_user.make_friends_with(params[:mobiles])
-      end
-
       def check_presence
         @user_exist = User.exist_with_account_name?(params[:account_name])
       end
@@ -46,16 +42,19 @@ module Api
       end
 
       def friends_and_contacts
-        @friends = current_user.friends
+        @old_friends = current_user.friends
         @friend_invitations_sent_to = current_user.friend_invitations_sent_to
         @friend_invitations_received_by = current_user.friend_invitations_received_by
-        total_friend_related_users = @friends + @friend_invitations_sent_to + @friend_invitations_received_by
+        total_friend_related_users = @old_friends + @friend_invitations_sent_to + @friend_invitations_received_by
+
         if(params[:mobiles].present?)
-          @users = User.where.not(id: total_friend_related_users.map(&:id)).verified.with_mobiles(params[:mobiles])
+          @other_mobiles = params[:mobiles] - total_friend_related_users.map(&:mobile)
+          @new_friends = current_user.make_friends_with(@other_mobiles)
+          @other_mobiles -= @new_friends.map(&:mobile)
         else
-          @users = []
+          @other_mobiles = []
+          @new_friends = []
         end
-        @others = (params[:mobiles] || []) - @users.map(&:mobile) - total_friend_related_users.map(&:mobile)
       end
 
       private
