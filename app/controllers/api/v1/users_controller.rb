@@ -53,6 +53,8 @@ module Api
 
         if(params[:mobiles].present?)
           @other_mobiles = params[:mobiles] - total_friend_related_users.map(&:mobile)
+          Rails.logger.info '9' * 80
+          Rails.logger.info "other_mobiles #{(@other_mobiles)}"
           @new_friends = current_user.make_friends_with(@other_mobiles)
           @other_mobiles -= @new_friends.map(&:mobile)
         else
@@ -60,10 +62,9 @@ module Api
           @new_friends = []
         end
         Rails.logger.info '7' * 80
-        Rails.logger.info (@old_friends + @new_friends)
-        Rails.logger.info @friend_invitations_sent_to
-        Rails.logger.info @friend_invitations_received_by
-        Rails.logger.info @other_mobiles
+        Rails.logger.info "old_friends #{(@old_friends)}"
+        Rails.logger.info "new_friends #{(@new_friends)}"
+        Rails.logger.info "on #{(@old_friends + @new_friends)}"
         Rails.logger.info '8' * 80
       end
 
