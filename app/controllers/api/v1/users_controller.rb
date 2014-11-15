@@ -59,6 +59,12 @@ module Api
           @other_mobiles = []
           @new_friends = []
         end
+        Rails.logger.info '7' * 80
+        Rails.logger.info (@old_friends + @new_friends)
+        Rails.logger.info @friend_invitations_sent_to
+        Rails.logger.info @friend_invitations_received_by
+        Rails.logger.info @other_mobiles
+        Rails.logger.info '8' * 80
       end
 
       private
