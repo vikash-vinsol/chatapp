@@ -57,9 +57,9 @@ class User < ActiveRecord::Base
 
   def send_accept_or_reject_invitation_of(user, status)
     inviter_device = { type: user.device_type, token: user.device_token }
-    invitee_mobile = mobile
-    data = { invitee_mobile: invitee_mobile }
-    message = "#{invitee_mobile} #{status} your invitation"
+    invitee_account_name = account_name
+    data = { invitee_account_name: invitee_account_name }
+    message = "#{invitee_account_name} #{status} your invitation"
     PushNotification.new([inviter_device], data, message).send
   end
 
