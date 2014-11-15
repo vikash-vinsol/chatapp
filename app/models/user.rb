@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
   end
 
   def make_friends_with(mobiles)
+      Rails.logger.info "mobiles_array #{(mobiles)}"
+      Rails.logger.info "verified_users #{User.verified.with_mobiles(mobiles).inspect}"
     User.verified.with_mobiles(mobiles).select do |user|
       friendship = friendships.new(friend_id: user.id, without_friend_invitation: true)
       a = friendship.save
