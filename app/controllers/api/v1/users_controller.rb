@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < BaseController
       before_filter :load_user_by_mobile, only: [:resend_verification_sms, :verify]
-      before_filter :load_verified_user_by_mobile, only: [:send_friend_request, :friend_invitation_response]
+      before_filter :load_verified_user_by_account_name, only: [:send_friend_request, :friend_invitation_response]
       before_filter :check_status, only: :friend_invitation_response
 
       skip_before_filter :authorize_request, only: [:create, :check_presence, :resend_verification_sms, :verify]
@@ -45,12 +45,6 @@ module Api
         @status = current_user.handle_friend_invitation_response(@user, params[:status])
       end
 
-      def friends_and_invitations
-        @friends = current_user.friends
-        @friend_invitations_sent_to = current_user.friend_invitations_sent_to
-        @friend_invitations_received_by = current_user.friend_invitations_received_by
-      end
-
       def friends_and_contacts
         @friends = current_user.friends
         @friend_invitations_sent_to = current_user.friend_invitations_sent_to
@@ -73,8 +67,8 @@ module Api
           render(status: 404, text: 'not found') unless(@user = User.find_by_mobile(params[:mobile]))
         end
 
-        def load_verified_user_by_mobile
-          render(status: 404, text: 'not found') unless(@user = User.verified.find_by_mobile(params[:mobile]))
+        def load_verified_user_by_account_name
+          render(status: 404, text: 'not found') unless(@user = User.verified.find_by_account_name(params[:account_name]))
         end
 
         def user_params

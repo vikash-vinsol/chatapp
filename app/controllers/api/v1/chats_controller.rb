@@ -1,7 +1,7 @@
 module Api
   module V1
     class ChatsController < BaseController
-      before_action :load_user_by_mobile, only: :create
+      before_action :load_verified_user_by_account_name, only: :create
 
       def create
         @content = Content.new(content_params)
@@ -15,10 +15,10 @@ module Api
           params.require(:content).permit(:description, :attachment)
         end
 
-        def load_user_by_mobile
+        def load_verified_user_by_account_name
           # only chat with friends.verified user or socialized user
           # TODO : for socialized user
-          if (@user = current_user.friends.verified.where(mobile: params[:mobile])).blank?
+          if (@user = current_user.friends.verified.where(account_name: params[:account_name])).blank?
             render status: 404, text: 'Receiver not found.'
           end
         end
