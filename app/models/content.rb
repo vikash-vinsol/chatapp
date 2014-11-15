@@ -18,7 +18,7 @@ class Content < ActiveRecord::Base
 
   def push_notify
     device_infos = receivers.map { |user| {type: user.device_type, token: user.device_token} }
-    data = { description: description, attachment_url: attachment_url, timer: timer, from: user.mobile }
+    data = { description: description, attachment_url: attachment_url, timer: timer, from: user.account_name }
     PushNotification.new(device_infos, data, alert_desc).send
   end
 
@@ -27,6 +27,6 @@ class Content < ActiveRecord::Base
   end
 
   def alert_desc
-    "#{user.mobile}: #{description.truncate(20)}"
+    "#{user.account_name}: #{description.truncate(20)}"
   end
 end
