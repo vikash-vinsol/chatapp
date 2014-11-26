@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141011093458) do
+ActiveRecord::Schema.define(version: 20141123201440) do
 
   create_table "content_receivers", force: true do |t|
     t.integer  "receiver_id"
@@ -144,6 +144,15 @@ ActiveRecord::Schema.define(version: 20141011093458) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
+  create_table "social_relations", force: true do |t|
+    t.integer  "user_id",           null: false
+    t.integer  "socialize_with_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "social_relations", ["user_id"], name: "index_social_relations_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "account_name",                               null: false
     t.string   "firstname",                                  null: false
@@ -161,11 +170,14 @@ ActiveRecord::Schema.define(version: 20141011093458) do
     t.datetime "verification_token_sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "social",                     default: false, null: false
+    t.boolean  "socialized",                 default: false, null: false
   end
 
   add_index "users", ["account_name"], name: "index_users_on_account_name", unique: true, using: :btree
   add_index "users", ["country_id"], name: "index_users_on_country_id", using: :btree
   add_index "users", ["device_token"], name: "index_users_on_device_token", unique: true, using: :btree
   add_index "users", ["mobile"], name: "index_users_on_mobile", unique: true, using: :btree
+  add_index "users", ["verified", "social", "socialized"], name: "index_users_for_socialize", using: :btree
 
 end
