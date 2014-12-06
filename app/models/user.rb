@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Verification
+  include Socialization
 
   has_many :content_receivers, foreign_key: :receiver_id, dependent: :destroy
   has_many :pending_contents, class_name: 'Content', through: :content_receivers, source: :content

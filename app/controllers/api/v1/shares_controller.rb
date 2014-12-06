@@ -6,7 +6,8 @@ module Api
       def create
         @content = Content.new(content_params)
         @content.user = current_user
-        Share.with_users(@content, @users)
+        # @content.save if @content.attachment_url.present?
+        Share.new(@content, @users).push
         respond_with(@content)
       end
 
