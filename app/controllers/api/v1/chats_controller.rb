@@ -6,7 +6,8 @@ module Api
       def create
         @content = Content.new(content_params)
         @content.user = current_user
-        Chat.with_user(@content, @user)
+        # @content.save if @content.attachment_url.present?
+        Chat.new(@content, @user).push
         respond_with(@content)
       end
 
