@@ -20,7 +20,7 @@ class Socialize < ContentReceiver
       end
 
       if try_count > 5
-        device_infos = { type: from_user.device_type, token: from_user.device_token } }
+        device_infos = { type: from_user.device_type, token: from_user.device_token }
         data = { description: 'Cannot be socialized' }
         PushNotification.new(device_infos, data, 'Cannot be socialized').send
       end
