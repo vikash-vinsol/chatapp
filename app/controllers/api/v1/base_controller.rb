@@ -25,6 +25,13 @@ module Api
         def current_user
           @current_user ||= User.verified.with_device_token(current_device_token).find_by(id: session[:user_id])
         end
+
+        def set_attachment_data_and_save
+          if((encoded_image_data = params[:content][:encoded_image_data]).present?)
+            @content.set_attachment(encoded_image_data, params[:content][:image_format])
+            @content.save
+          end
+        end
     end
   end
 end

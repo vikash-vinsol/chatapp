@@ -6,14 +6,14 @@ module Api
       def create
         @content = Content.new(content_params)
         @content.user = current_user
-        # @content.save if @content.attachment_url.present?
+        set_attachment_data_and_save
         Share.new(@content, @users).push
         respond_with(@content)
       end
 
       private
         def content_params
-          params.require(:content).permit(:description, :timer, :attachment)
+          params.require(:content).permit(:description, :timer)
         end
 
         def load_verified_users_by_account_names

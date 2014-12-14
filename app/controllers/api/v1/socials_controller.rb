@@ -4,7 +4,10 @@ module Api
       def create
         @content = Content.new(content_params)
         @content.user = current_user
-        Socialize.new(@content).create_session if @content.save
+        if((encoded_image_data = params[:content][:encoded_image_data]).present?)
+          @content.set_attachment(encoded_image_data, params[:content][:image_format])
+        end
+        Socialize.new(@content).create_session if(@content.save)
         respond_with(@content)
       end
 
@@ -16,7 +19,7 @@ module Api
 
       private
         def content_params
-          params.require(:content).permit(:description, :attachment)
+          params.require(:content).permit(:description)
         end
     end
   end

@@ -6,14 +6,14 @@ module Api
       def create
         @content = Content.new(content_params)
         @content.user = current_user
-        # @content.save if @content.attachment_url.present?
+        set_attachment_data_and_save
         Chat.new(@content, @user).push
         respond_with(@content)
       end
 
       private
         def content_params
-          params.require(:content).permit(:description, :attachment)
+          params.require(:content).permit(:description)
         end
 
         def load_verified_user_by_account_name

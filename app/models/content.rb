@@ -19,4 +19,12 @@ class Content < ActiveRecord::Base
   def alert_desc
     "#{user.account_name}: #{description.truncate(20)}"
   end
+
+  def set_attachment(encoded_image_data, image_format)
+    decoded_data = Base64.decode64(encoded_image_data.gsub(/\\n/, "\n").gsub(' ', '+'))
+    file = Tempfile.new(["temp#{DateTime.now.to_i}", ".#{image_format}"]) 
+    file.binmode
+    file.write decoded_data
+    self.attachment = file
+  end
 end
