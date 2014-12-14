@@ -3,8 +3,10 @@ class Content < ActiveRecord::Base
 
   has_attached_file :attachment,
                     default_url: '',
-                    url: 'public/attachment/:id/:style/:basename.:extension',
-                    path: 'public/attachment/:id/:style/:basename.:extension'
+                    url: 'content/:id/:style/:basename.:extension',
+                    path: 'content/:id/:style/:basename.:extension',
+                    storage: :s3,
+                    s3_credentials: { bucket: ENV['AWS_BUCKET'], access_key_id: ENV['AWS_ACCESS_KEY'], secret_access_key: ENV['AWS_SECRET_TOKEN'] }
 
   validates_attachment_content_type :attachment, :content_type => /\Aimage\/.*\Z/
   validates_attachment_presence :attachment, unless: :description?

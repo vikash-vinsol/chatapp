@@ -35,6 +35,7 @@ gem 'paperclip'
 gem 'thin'
 gem 'rpush', '~> 2.2.0'
 gem 'figaro', '~> 1.0.0'
+gem 'aws-sdk', '~> 1.59.1'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 # gem 'spring',        group: :development
 
