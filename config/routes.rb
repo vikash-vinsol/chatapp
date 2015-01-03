@@ -16,8 +16,10 @@ Rails.application.routes.draw do
       end
 
       resources :shares, only: :create
-      resources :chats, only: :create
-      # resources :socials, only: [:create, :show]
+      resources :chats, only: :create do
+        post :with_socialized_user
+      end
+      resources :socials, only: [:create, :destroy]
     end
   end
 end

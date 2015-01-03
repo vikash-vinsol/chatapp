@@ -19,7 +19,7 @@ module Api
 
       private
         def content_params
-          params.require(:content).permit(:description)
+          params.require(:content).permit(:description, :timer)
         end
     end
   end

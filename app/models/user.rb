@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
   has_many :content_receivers, foreign_key: :receiver_id, dependent: :destroy
   has_many :pending_contents, class_name: 'Content', through: :content_receivers, source: :content
   has_many :contents, dependent: :destroy
-  has_one :social_relation
-  has_one :socialize_with, through: :social_relation
+
   belongs_to :country
 
   validates :account_name, :firstname, :lastname, :country, :mobile, presence: true

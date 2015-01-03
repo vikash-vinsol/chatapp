@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123201440) do
+ActiveRecord::Schema.define(version: 20150103185009) do
 
   create_table "content_receivers", force: true do |t|
     t.integer  "receiver_id"
@@ -70,6 +70,13 @@ ActiveRecord::Schema.define(version: 20141123201440) do
   create_table "friendships", force: true do |t|
     t.integer  "user_id",    null: false
     t.integer  "friend_id",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pending_socials", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "content_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
