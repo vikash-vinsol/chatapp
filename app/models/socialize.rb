@@ -1,40 +1,24 @@
-class Socialize < ContentReceiver
-  def create_session
-    from_user.social = true
-    trigger if from_user.save
+class Socialize
+  attr_accessor :pending_social1, :pending_social2
+
+  def initialize(pending_social1, pending_social2)
+    self.pending_social1 = pending_social1
+    self.pending_social2 = pending_social2
   end
 
-  def trigger
-    if from_user.reload.social? && !from_user.socialized?
-      try_count = 1
-      while try_count <= 5
-        social_user_id = from_user.find_socialized_user_id
-        social_relation = from_user.build_social_relation(socialize_with_id: social_user_id)
-        begin
-          social_relation.save!
-          self.receivers = [User.find_by(id: social_user_id)]
-          push
-        rescue StandardError => e
-          try_count += 1
-        end
+  def make_relationship
+    social_relation = pending_social1.user.build_social_relation(socialize_with_id: pending_social2.user_id)
+    begin
+      ActiveRecord::Base.transaction do
+        social_relation.save!
+        pending_social1.destroy!
+        pending_social2.destroy!
+        pending_social1.user.notify_successful_socialization_with(pending_social2.user, pending_social2.content)
+        pending_social2.user.notify_successful_socialization_with(pending_social1.user, pending_social1.content)
       end
-
-      if try_count > 5
-        device_infos = { type: from_user.device_type, token: from_user.device_token }
-        data = { description: 'Cannot be socialized' }
-        PushNotification.new(device_infos, data, 'Cannot be socialized').send
-      end
-    end
-  end
-
-  # handle_asynchronously :trigger
-
-  def destroy_session
-    from_user.social = false
-    if from_user.save
-      self.receivers = [from_user.socialize_with]
-      social_relation.try(:destroy)
-      push
+    rescue StandardError => e
+      pending_social1.handle_unsuccessful_connection
+      pending_social2.handle_unsuccessful_connection
     end
   end
 end

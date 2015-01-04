@@ -7,19 +7,27 @@ module Api
         if((encoded_image_data = params[:content][:encoded_image_data]).present?)
           @content.set_attachment(encoded_image_data, params[:content][:image_format])
         end
-        Socialize.new(@content).create_session if(@content.save)
-        respond_with(@content)
+        if(current_user.socialized?)
+          @status = User::SOCIALIZE_RESPONSE_CODES[:already_socialized]
+        elsif(@content.save)
+          PendingSocial.create(user_id: current_user.id, content_id: @content.id)
+          @status = User::SOCIALIZE_RESPONSE_CODES[:success]
+        else
+          @status = User::SOCIALIZE_RESPONSE_CODES[:failure]
+        end
       end
 
       def destroy
-        content = Content.new(description: 'No more socialized', user: current_user)
-        Socialize.new(content).destroy_session
-        respond_with(current_user)
+        if(social_relation = SocialRelation.find_by_user_id(current_user.id) && social_relation.destroy)
+          @destroyed_status = 1
+        else
+          @destroyed_status = 0
+        end
       end
 
       private
         def content_params
-          params.require(:content).permit(:description)
+          params.require(:content).permit(:description, :timer)
         end
     end
   end

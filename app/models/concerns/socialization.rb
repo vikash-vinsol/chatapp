@@ -2,12 +2,16 @@ module Socialization
   extend ActiveSupport::Concern
 
   included do
-    scope :social, -> { where(social: true) }
-    scope :not_socialized, -> { where(socialized: false) }
+    SOCIALIZE_RESPONSE_CODES = { success: '0', already_socialized: '1', failure: '2' }
+    has_one :social_relation
+    has_one :socialize_with, through: :social_relation
   end
 
-  def find_socialized_user_id
-    social_users_ids = where.not(id: self.id).verified.social.not_socialized.pluck(:id)
-    social_users_ids.sample
+  def notify_successful_socialization_with(user, content)
+    device = { type: device_type, token: device_token }
+    socialize_with_user = user.account_name
+    data = { description: content.description, attachment_url: content.attachment_url, timer: content.timer, socialize_with_user: socialize_with_user }
+    message = "You have been socialized with #{socialize_with_user}"
+    PushNotification.new([device], data, message).send
   end
 end
