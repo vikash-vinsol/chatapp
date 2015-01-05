@@ -9,7 +9,7 @@ class PendingSocial < ActiveRecord::Base
 
   def handle_unsuccessful_connection
     device_infos = { type: user.device_type, token: user.device_token }
-    data = { description: 'Cannot be socialized' }
+    data = { push_type: PUSH_NOTIFICATION_TYPES[:unsuccessful_socialization], description: 'Cannot be socialized' }
     PushNotification.new([device_infos], data, 'Cannot be socialized').send
     destroy
   end

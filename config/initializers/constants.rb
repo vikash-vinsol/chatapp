@@ -1,1 +1,2 @@
 DEVICE_TYPE = { 'iphone' => '0', 'ipad' => '0', 'android' => '1'  }
+PUSH_NOTIFICATION_TYPES = { successful_socialization: '0', unsuccessful_socialization: '1', friend_invitation: '2', friend_invitation_response: '3', share_or_chat: '4', socialization_exit: '5' }

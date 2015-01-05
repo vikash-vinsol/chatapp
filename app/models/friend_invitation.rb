@@ -25,7 +25,7 @@ class FriendInvitation < ActiveRecord::Base
   def send_friend_invitation
     invitee_device = { type: invitee.device_type, token: invitee.device_token }
     inviter_account_name = inviter.account_name
-    data = { inviter_account_name: inviter_account_name }
+    data = { push_type: PUSH_NOTIFICATION_TYPES[:friend_invitation], inviter_account_name: inviter_account_name }
     message = "#{inviter_account_name} invited you"
     PushNotification.new([invitee_device], data, message).send
   end

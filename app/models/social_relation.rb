@@ -25,7 +25,7 @@ class SocialRelation < ActiveRecord::Base
         coupled_social_relation.delete
         User.where(id: [user_id, socialize_with_id]).update_all(socialized: false)
         device_infos = { type: socialize_with_user.device_type, token: socialize_with_user.device_token }
-        data = { description: 'Your socialized partner has left' }
+        data = { push_type: PUSH_NOTIFICATION_TYPES[:socialization_exit], description: 'Your socialized partner has left' }
         PushNotification.new([device_infos], data, 'Your socialized partner has left').send
       end
     end

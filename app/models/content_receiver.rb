@@ -10,7 +10,7 @@ class ContentReceiver
   def push
     if receivers.present?
       device_infos = receivers.map { |receiver| { type: receiver.device_type, token: receiver.device_token } }
-      data = { description: content.description, attachment_url: content.attachment_url, timer: content.timer, from: from_user.account_name }
+      data = { push_type: PUSH_NOTIFICATION_TYPES[:share_or_chat], description: content.description, attachment_url: content.attachment_url, timer: content.timer, from: from_user.account_name }
       PushNotification.new(device_infos, data, content.alert_desc).send
     else
       content.errors.add(:base, 'Receiver not present')
